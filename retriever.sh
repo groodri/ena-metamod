@@ -38,16 +38,14 @@ for id in ${ids[@]}; do
 	accessions[${#accessions[@]}]=$(grep $id $inputFile | cut -f 3)
 done
 
-echo ${accessions[@]}
-
 ###############################################################################
 # 2. Download sample XML files
 # Loop over accession list and retrieve individual sample XML files
 
-#rm -rf "$(pwd)/xml/samples"; mkdir -p "$(pwd)"/xml/samples
+rm -rf "$(pwd)/xml/samples"; mkdir -p "$(pwd)"/xml/samples
 
-#for acc in ${accessions[@]}; do
-#	wget -nv "https://www.ebi.ac.uk/ena/browser/api/xml/$acc" -O "xml/samples/$acc.xml"
-#done
+for acc in ${accessions[@]}; do
+	wget -nv "https://www.ebi.ac.uk/ena/browser/api/xml/$acc" -O "xml/samples/$acc.xml"
+done
 
-#exit 0
+exit 0
