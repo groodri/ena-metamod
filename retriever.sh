@@ -2,6 +2,8 @@
 
 set -e
 
+# edit: make option filter file into optional accessions file
+
 ###############################################################################
 # 0. Usage and assertions
 
@@ -29,7 +31,7 @@ filterFile=$2
 # 1. Input TSV handling
 # Retrieve sample accessions from input file, save them into array
 
-filteredFile=filtered_input.txt
+#filteredFile=filtered_input.txt
 
 ids=($(awk -F '\t' -vcol=ID '(NR==1){colnum=-1;for(i=1;i<=NF;i++)if($(i)==col)colnum=i;}{print $(colnum)}' $filterFile | awk 'NR!=1' -))
 
@@ -37,6 +39,8 @@ declare -a accessions
 for id in ${ids[@]}; do
 	accessions[${#accessions[@]}]=$(grep $id $inputFile | cut -f 3)
 done
+
+printf "%s\n" "${accessions[@]}" > accessions.txt
 
 ###############################################################################
 # 2. Download sample XML files
