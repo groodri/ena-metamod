@@ -28,22 +28,27 @@ metaFile=$1
 ###############################################################################
 # 1. Loop over files, pick up sample alias, xref metadata, append new metadata
 # to file.
-# Append with python function (xmltree)? 
 
-mkdir -p $(pwd)/xml/modified_samples
-outFolder="$(pwd)/xml/modified_samples"
-xmlFolder="$(pwd)/xml/samples"
+mkdir -p xml/modified_samples
+outFolder=xml/modified_samples
+xmlFolder=xml/samples
 
+echo "Starting"
+for i in $(ls $xmlFolder); do
+	echo "Sample $i"
 
-for sample in $(ls $xmlFolder); do
+	sampleXML=$xmlFolder/$i
 	# line 7: <SUBMITTER_ID namespace="UNIVERSITY MEDICAL CENTER UTRECHT">E3160</SUBMITTER_ID>
-	alias=$(xpath -q -e SAMPLE_SET/SAMPLE/IDENTIFIERS/SUBMITTER_ID $sample | cut -d'>' -f2 | cut -d'<' -f1)
+	sample=$(xpath -q -e SAMPLE_SET/SAMPLE/IDENTIFIERS/SUBMITTER_ID $sampleXML | cut -d'>' -f2 | cut -d'<' -f1)
 	
 	# retrieve information to add from metadata file
 	header=$(head -n 1 $metaFile)
-	sampleData=$(grep -n $alias $metaFile)
+	sampleData=$(grep $sample $metaFile)
+
+	cp $sampleXML $outFolder/$i
 
 	# run python modifier script to write out modified xml for each sample
-	python modify_xml.py $sample $header $sampleData > "$outfolder/$sample"
-
+	python modify_xml.py "$outFolder/$i" "$header" "$sampleData"
 done
+
+echo "Done"
