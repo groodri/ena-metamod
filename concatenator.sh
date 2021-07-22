@@ -6,7 +6,7 @@ set -e
 # 0. Usage and assertions
 
 usage () {
-	echo "Modifier script of sample XMLs, adding formatted metadata."
+	echo "Concatenator script of sample XMLs."
 	echo "@groodri, 2021"
 	echo -e "\nUsage:\n$0 [XML folder] [output folder] [-h, --help]\n"
 	echo "Please provide a folder with XML files as input, as well as an output folder."
@@ -48,3 +48,5 @@ sed -i '/^$/d' $outFile
 # add lines at start and end of file
 sed -i "1s/^/$line1\n$line2\n/" $outFile
 echo $line3 >> $outFile
+
+exit 0
