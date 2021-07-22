@@ -29,6 +29,12 @@ def add_child(parent, tag, text):
     child.append(valueElement)
     valueElement.text = text
 
+    # add attribute <UNITS> to coordinate elements
+    if 'latitude' in tag or 'longitude' in tag:
+        unitsElement = child.makeelement("UNITS", attrib)
+        child.append(unitsElement)
+        unitsElement.text = 'DD'
+
     return child
 
 def add_elements(sampleXML, dictionary):

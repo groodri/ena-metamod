@@ -47,8 +47,13 @@ for i in $(ls $xmlFolder); do
 
 	cp $sampleXML $outFolder/$i
 
+	# modify ENA checklist to ERC000014
+	sed -i 's|ERC000011|ERC000014|g' $outFolder/$i
+
 	# run python modifier script to write out modified xml for each sample
 	python modify_xml.py "$outFolder/$i" "$header" "$sampleData"
 done
 
 echo "Done"
+
+exit 0
